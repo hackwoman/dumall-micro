@@ -1,0 +1,141 @@
+version: '3.8'
+
+services:
+  # 生产环境使用外部数据库
+  user-service:
+    environment:
+      - SPRING_PROFILES_ACTIVE=production
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/dumall_user
+      - SPRING_DATASOURCE_USERNAME=dumall_user
+      - SPRING_DATASOURCE_PASSWORD=dumall_password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+    restart: always
+
+  product-service:
+    environment:
+      - SPRING_PROFILES_ACTIVE=production
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/dumall_product
+      - SPRING_DATASOURCE_USERNAME=dumall_user
+      - SPRING_DATASOURCE_PASSWORD=dumall_password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+    restart: always
+
+  payment-service:
+    environment:
+      - SPRING_PROFILES_ACTIVE=production
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/dumall_payment
+      - SPRING_DATASOURCE_USERNAME=dumall_user
+      - SPRING_DATASOURCE_PASSWORD=dumall_password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+    restart: always
+
+  inventory-service:
+    environment:
+      - SPRING_PROFILES_ACTIVE=production
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/dumall_inventory
+      - SPRING_DATASOURCE_USERNAME=dumall_user
+      - SPRING_DATASOURCE_PASSWORD=dumall_password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+    restart: always
+
+  # 生产环境数据库配置
+  postgres:
+    environment:
+      POSTGRES_DB: dumall
+      POSTGRES_USER: dumall_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dumall_password}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 1G
+          cpus: '0.5'
+    restart: always
+
+  # 生产环境Redis配置
+  redis:
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis_password}
+    volumes:
+      - redis-data:/data
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.25'
+        reservations:
+          memory: 256M
+          cpus: '0.1'
+    restart: always
+
+  # 生产环境Nginx配置
+  nginx-gateway:
+    volumes:
+      - ./nginx-gateway.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - ./logs/nginx:/var/log/nginx
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.25'
+        reservations:
+          memory: 128M
+          cpus: '0.1'
+    restart: always
+
+  # 生产环境前端配置
+  frontend:
+    environment:
+      - NODE_ENV=production
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.25'
+        reservations:
+          memory: 128M
+          cpus: '0.1'
+    restart: always
+
+volumes:
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local
