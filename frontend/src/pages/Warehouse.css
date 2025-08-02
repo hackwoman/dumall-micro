@@ -1,0 +1,303 @@
+.warehouse-page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px 0;
+}
+
+.warehouse-page .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.warehouse-page .page-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.warehouse-page .page-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+
+.warehouse-page .page-header p {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.warehouse-page .ant-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+}
+
+.warehouse-page .ant-statistic-title {
+  font-size: 14px;
+  color: #666;
+}
+
+.warehouse-page .ant-statistic-content {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1890ff;
+}
+
+.warehouse-page .ant-tabs-tab {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.warehouse-page .ant-table-thead > tr > th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.warehouse-page .ant-table-tbody > tr:hover > td {
+  background-color: #f0f8ff;
+}
+
+.warehouse-page .ant-tag {
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.warehouse-page .ant-btn-link {
+  padding: 4px 8px;
+  height: auto;
+  border-radius: 4px;
+}
+
+.warehouse-page .ant-btn-link:hover {
+  background-color: #f0f0f0;
+}
+
+.warehouse-page .ant-modal-content {
+  border-radius: 8px;
+}
+
+.warehouse-page .ant-form-item-label > label {
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.warehouse-page .ant-input,
+.warehouse-page .ant-select-selector {
+  border-radius: 6px;
+}
+
+.warehouse-page .ant-input:focus,
+.warehouse-page .ant-select-focused .ant-select-selector {
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.warehouse-page .ant-progress {
+  margin-top: 4px;
+}
+
+.warehouse-page .ant-progress-text {
+  font-size: 12px;
+}
+
+/* 库存状态样式 */
+.inventory-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inventory-status.in-stock {
+  color: #52c41a;
+}
+
+.inventory-status.low-stock {
+  color: #fa8c16;
+}
+
+.inventory-status.out-of-stock {
+  color: #ff4d4f;
+}
+
+/* 交易记录样式 */
+.transaction-row {
+  transition: background-color 0.3s ease;
+}
+
+.transaction-row:hover {
+  background-color: #f0f8ff;
+}
+
+.transaction-amount {
+  font-weight: 600;
+}
+
+.transaction-amount.in {
+  color: #52c41a;
+}
+
+.transaction-amount.out {
+  color: #ff4d4f;
+}
+
+/* 统计卡片样式 */
+.statistic-card {
+  text-align: center;
+  padding: 24px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.statistic-card .ant-statistic-title {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.statistic-card .ant-statistic-content {
+  color: white;
+}
+
+.statistic-card.success {
+  background: linear-gradient(135deg, #52c41a 0%, #73d13d 100%);
+}
+
+.statistic-card.warning {
+  background: linear-gradient(135deg, #fa8c16 0%, #ffa940 100%);
+}
+
+.statistic-card.danger {
+  background: linear-gradient(135deg, #ff4d4f 0%, #ff7875 100%);
+}
+
+/* 库位标签样式 */
+.location-tag {
+  background-color: #f6ffed;
+  border-color: #b7eb8f;
+  color: #52c41a;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .warehouse-page .container {
+    padding: 0 16px;
+  }
+  
+  .warehouse-page .page-header h1 {
+    font-size: 24px;
+  }
+  
+  .warehouse-page .page-header p {
+    font-size: 14px;
+  }
+  
+  .warehouse-page .ant-statistic-content {
+    font-size: 20px;
+  }
+  
+  .warehouse-page .ant-table {
+    font-size: 12px;
+  }
+  
+  .warehouse-page .ant-btn-link {
+    padding: 2px 4px;
+    font-size: 12px;
+  }
+  
+  .warehouse-page .ant-progress {
+    margin-top: 2px;
+  }
+}
+
+/* 库存项目卡片样式 */
+.inventory-item-card {
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.inventory-item-card:hover {
+  border-color: #1890ff;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.15);
+}
+
+.inventory-item-card.low-stock {
+  border-color: #fa8c16;
+  background-color: #fff7e6;
+}
+
+.inventory-item-card.out-of-stock {
+  border-color: #ff4d4f;
+  background-color: #fff2f0;
+}
+
+/* 进度条样式 */
+.warehouse-page .ant-progress-bg {
+  transition: all 0.3s ease;
+}
+
+.warehouse-page .ant-progress-success-bg {
+  background-color: #52c41a;
+}
+
+.warehouse-page .ant-progress-exception .ant-progress-bg {
+  background-color: #ff4d4f;
+}
+
+/* 表格行样式 */
+.warehouse-page .ant-table-tbody > tr > td {
+  padding: 12px 16px;
+  vertical-align: middle;
+}
+
+.warehouse-page .ant-table-tbody > tr > td:first-child {
+  padding-left: 16px;
+}
+
+.warehouse-page .ant-table-tbody > tr > td:last-child {
+  padding-right: 16px;
+}
+
+/* 按钮组样式 */
+.warehouse-page .ant-space {
+  gap: 8px;
+}
+
+.warehouse-page .ant-btn {
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.warehouse-page .ant-btn-primary {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+.warehouse-page .ant-btn-primary:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}
+
+/* 模态框样式 */
+.warehouse-page .ant-modal-header {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 16px 24px;
+}
+
+.warehouse-page .ant-modal-title {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.warehouse-page .ant-modal-body {
+  padding: 24px;
+}
+
+.warehouse-page .ant-modal-footer {
+  border-top: 1px solid #f0f0f0;
+  padding: 16px 24px;
+} 

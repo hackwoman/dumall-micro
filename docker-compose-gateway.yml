@@ -1,0 +1,155 @@
+version: '3.8'
+
+services:
+  # Redis缓存服务
+  redis:
+    image: redis:7-alpine
+    container_name: dumall-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - dumall-network
+
+  # Nginx API网关
+  nginx-gateway:
+    image: nginx:alpine
+    container_name: dumall-nginx-gateway
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-gateway.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - user-service
+      - product-service
+      - payment-service
+      - inventory-service
+    networks:
+      - dumall-network
+    restart: unless-stopped
+
+  # 用户服务
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    container_name: dumall-user-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/dumall_user?useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=dumall
+      - SPRING_DATASOURCE_PASSWORD=dumall123
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+      - JWT_SECRET=dumall-jwt-secret-key-2024
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - dumall-network
+    restart: unless-stopped
+
+  # 商品服务
+  product-service:
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile
+    container_name: dumall-product-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/dumall_product?useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=dumall
+      - SPRING_DATASOURCE_PASSWORD=dumall123
+    depends_on:
+      - mysql
+    networks:
+      - dumall-network
+    restart: unless-stopped
+
+  # 支付服务
+  payment-service:
+    build:
+      context: ./payment-service
+      dockerfile: Dockerfile
+    container_name: dumall-payment-service
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/dumall_payment?useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=dumall
+      - SPRING_DATASOURCE_PASSWORD=dumall123
+    depends_on:
+      - mysql
+    networks:
+      - dumall-network
+    restart: unless-stopped
+
+  # 库存服务
+  inventory-service:
+    build:
+      context: ./inventory-service
+      dockerfile: Dockerfile
+    container_name: dumall-inventory-service
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/dumall_inventory?useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=dumall
+      - SPRING_DATASOURCE_PASSWORD=dumall123
+    depends_on:
+      - mysql
+    networks:
+      - dumall-network
+    restart: unless-stopped
+
+  # MySQL数据库
+  mysql:
+    image: mysql:8.0
+    container_name: dumall-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root123
+      - MYSQL_DATABASE=dumall
+      - MYSQL_USER=dumall
+      - MYSQL_PASSWORD=dumall123
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - dumall-network
+    restart: unless-stopped
+
+  # 前端应用
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: dumall-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_BASE_URL=http://localhost
+    depends_on:
+      - nginx-gateway
+    networks:
+      - dumall-network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  dumall-network:
+    driver: bridge 

@@ -1,0 +1,130 @@
+.user-page {
+    background: #f5f5f5;
+    min-height: calc(100vh - 124px);
+    padding: 20px 0;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+/* 认证卡片样式 */
+.auth-card {
+    max-width: 400px;
+    margin: 40px auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 用户信息卡片样式 */
+.user-info-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: auto;
+    min-height: 300px;
+}
+
+.user-avatar-section {
+    text-align: center;
+    padding: 24px 0;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 24px;
+}
+
+.username {
+    margin: 16px 0 8px 0 !important;
+    color: #262626;
+}
+
+.user-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 24px;
+    padding: 16px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.stat-item {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* 功能区域样式 */
+.user-functions-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    min-height: 400px;
+}
+
+.empty-orders,
+.empty-favorites,
+.empty-addresses {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-products {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.loading-container {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .user-page {
+        padding: 16px 0;
+    }
+
+    .container {
+        padding: 0 16px;
+    }
+
+    .auth-card {
+        margin: 20px auto;
+    }
+
+    .user-stats {
+        padding: 12px 0;
+    }
+
+    .user-avatar-section {
+        padding: 16px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-page {
+        padding: 12px 0;
+    }
+
+    .container {
+        padding: 0 12px;
+    }
+
+    .auth-card {
+        margin: 10px auto;
+    }
+
+    .user-stats {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .stat-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+    }
+}

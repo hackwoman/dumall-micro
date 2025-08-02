@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  # Nginx API网关
+  nginx-gateway:
+    image: nginx:alpine
+    container_name: dumall-nginx-gateway
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-gateway.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    networks:
+      - dumall-network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost/gateway/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  dumall-network:
+    driver: bridge
+    external: true

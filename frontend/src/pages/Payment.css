@@ -1,0 +1,194 @@
+.payment-page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px 0;
+}
+
+.payment-page .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.payment-page .page-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.payment-page .page-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+
+.payment-page .page-header p {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.payment-page .ant-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+}
+
+.payment-page .ant-statistic-title {
+  font-size: 14px;
+  color: #666;
+}
+
+.payment-page .ant-statistic-content {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1890ff;
+}
+
+.payment-page .ant-tabs-tab {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.payment-page .ant-table-thead > tr > th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.payment-page .ant-table-tbody > tr:hover > td {
+  background-color: #f0f8ff;
+}
+
+.payment-page .ant-tag {
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.payment-page .ant-btn-link {
+  padding: 4px 8px;
+  height: auto;
+  border-radius: 4px;
+}
+
+.payment-page .ant-btn-link:hover {
+  background-color: #f0f0f0;
+}
+
+.payment-page .ant-modal-content {
+  border-radius: 8px;
+}
+
+.payment-page .ant-form-item-label > label {
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.payment-page .ant-input,
+.payment-page .ant-select-selector {
+  border-radius: 6px;
+}
+
+.payment-page .ant-input:focus,
+.payment-page .ant-select-focused .ant-select-selector {
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .payment-page .container {
+    padding: 0 16px;
+  }
+  
+  .payment-page .page-header h1 {
+    font-size: 24px;
+  }
+  
+  .payment-page .page-header p {
+    font-size: 14px;
+  }
+  
+  .payment-page .ant-statistic-content {
+    font-size: 20px;
+  }
+  
+  .payment-page .ant-table {
+    font-size: 12px;
+  }
+  
+  .payment-page .ant-btn-link {
+    padding: 2px 4px;
+    font-size: 12px;
+  }
+}
+
+/* 支付方式卡片样式 */
+.payment-method-card {
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.payment-method-card:hover {
+  border-color: #1890ff;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.15);
+}
+
+.payment-method-card.default {
+  border-color: #52c41a;
+  background-color: #f6ffed;
+}
+
+/* 交易记录样式 */
+.transaction-row {
+  transition: background-color 0.3s ease;
+}
+
+.transaction-row:hover {
+  background-color: #f0f8ff;
+}
+
+.transaction-amount {
+  font-weight: 600;
+  color: #1890ff;
+}
+
+.transaction-amount.success {
+  color: #52c41a;
+}
+
+.transaction-amount.failed {
+  color: #ff4d4f;
+}
+
+.transaction-amount.pending {
+  color: #fa8c16;
+}
+
+/* 统计卡片样式 */
+.statistic-card {
+  text-align: center;
+  padding: 24px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.statistic-card .ant-statistic-title {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.statistic-card .ant-statistic-content {
+  color: white;
+}
+
+.statistic-card.success {
+  background: linear-gradient(135deg, #52c41a 0%, #73d13d 100%);
+}
+
+.statistic-card.warning {
+  background: linear-gradient(135deg, #fa8c16 0%, #ffa940 100%);
+} 
