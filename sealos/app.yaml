@@ -1,0 +1,182 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dumall
+  labels:
+    name: dumall
+    app: dumall-microservices
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dumall-config
+  namespace: dumall
+data:
+  # 数据库配置
+  DB_HOST: "postgres-service"
+  DB_PORT: "5432"
+  DB_NAME: "dumall"
+  DB_USER: "dumall_user"
+  
+  # Redis配置
+  REDIS_HOST: "redis-service"
+  REDIS_PORT: "6379"
+  
+  # 应用配置
+  API_GATEWAY_URL: "http://nginx-gateway-service"
+  FRONTEND_URL: "http://frontend-service:5174"
+  
+  # 日志配置
+  LOG_LEVEL: "INFO"
+  LOG_FORMAT: "JSON"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dumall-secrets
+  namespace: dumall
+type: Opaque
+data:
+  # 数据库密码 (base64编码)
+  DB_PASSWORD: ZHVtYWxsX3Bhc3N3b3Jk
+  # Redis密码 (base64编码)
+  REDIS_PASSWORD: cmVkaXNfcGFzc3dvcmQ=
+  # JWT密钥 (base64编码)
+  JWT_SECRET: ZHVtYWxsLWp3dC1zZWNyZXQta2V5
+  # API密钥 (base64编码)
+  API_KEY: ZHVtYWxsLWFwaS1rZXk=
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: dumall
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "dumall"
+        - name: POSTGRES_USER
+          value: "dumall_user"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: dumall-secrets
+              key: DB_PASSWORD
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: dumall
+spec:
+  selector:
+    app: postgres
+  ports:
+  - port: 5432
+    targetPort: 5432
+  type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: dumall
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: dumall
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:alpine
+        ports:
+        - containerPort: 6379
+        command: ["redis-server", "--appendonly", "yes", "--requirepass", "redis_password"]
+        volumeMounts:
+        - name: redis-storage
+          mountPath: /data
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "250m"
+      volumes:
+      - name: redis-storage
+        persistentVolumeClaim:
+          claimName: redis-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  namespace: dumall
+spec:
+  selector:
+    app: redis
+  ports:
+  - port: 6379
+    targetPort: 6379
+  type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-pvc
+  namespace: dumall
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi 
